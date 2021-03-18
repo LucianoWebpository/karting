@@ -1,42 +1,47 @@
-{% extends 'base.html.twig' %}
+{% extends 'bezoeker.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block menu %}
+    <li><a href="{{ path('homepage') }}">home</a></li>
+    <li><a href="{{ path('kartactiviteiten') }}">aanbod</a></li>
+    <li><a href="{{ path('registreren') }}">registreren</a></li>
+    <li><a href="#">contact</a></li>
+{% endblock %}
 
-{% block body %}
-<form method="post">
+{% block content %}
     {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
-
-    {% if app.user %}
-        <div class="mb-3">
-            You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+        <div class="alert alert-warning">
+            {{ error.messageKey|trans(error.messageData, 'security') }}
         </div>
     {% endif %}
 
-    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-    <label for="inputUsername">Username</label>
-    <input type="text" value="{{ last_username }}" name="_username" id="username" class="form-control" required autofocus>
-    <label for="inputPassword">Password</label>
-    <input type="password" name="password" id="inputPassword" class="form-control" required>
+    <h2>Inloggen</h2>
 
-    <input type="hidden" name="_csrf_token"
-           value="{{ csrf_token('authenticate') }}"
-    >
+    <form class="form-horizontal" action="{{ path('app_login') }}" method="post">
 
-    {#
-        Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-        See https://symfony.com/doc/current/security/remember_me.html
+        <div class="form-group">
 
-        <div class="checkbox mb-3">
-            <label>
-                <input type="checkbox" name="_remember_me"> Remember me
-            </label>
+            <label class="control-label col-sm-2" for="username">Inlognaam:</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" id="username"  name="username"  value="{{ last_username }}"  required="required" />
+            </div>
         </div>
-    #}
 
-    <button class="btn btn-lg btn-primary" type="submit">
-        Sign in
-    </button>
-</form>
+        <div class="form-group">
+
+            <label class="control-label col-sm-2" for="pwd">Wachtwoord:</label>
+            <div class="col-sm-6">
+                <input type="password" class="form-control" id="pwd"  name="password"   required="required" />
+            </div>
+        </div>
+        <input type="hidden" name="_csrf_token"
+               value="{{ csrf_token('authenticate') }}"
+        >
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-primary">Login</button>
+            </div>
+        </div>
+
+    </form>
+
 {% endblock %}

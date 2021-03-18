@@ -4,8 +4,10 @@ namespace App\Controller;
 
 
 use App\Entity\Soortactiviteit;
-use AppBundle\Form\ActiviteitType;
-use AppBundle\Form\UserType;
+use App\Entity\User;
+
+use App\Form\ActiviteitType;
+use App\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
@@ -13,7 +15,6 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Security\Core\User\User;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class BezoekerController extends AbstractController
@@ -40,7 +41,7 @@ class BezoekerController extends AbstractController
     /**
      * @Route("registreren", name="registreren")
      */
-    public function registreren(Request $request,UserPasswordEncoderInterface $passwordEncoder)
+    public function registreren(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
         // 1) build the form
         $user = new User();
@@ -79,7 +80,7 @@ class BezoekerController extends AbstractController
                     'error',
                     $user->getUsername()." bestaat al!"
                 );
-                return $this->render('bezoeker/registreren.html.twig', [
+                return $this->render('security/registreren.html.twig', [
                     'form'=>$form->createView()
                 ]);
             }

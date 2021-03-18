@@ -1,5 +1,4 @@
 <?php
-// src/AppBundle/Repository/UserRepository.php
 namespace App\Repository;
 
 use Doctrine\ORM\EntityRepository;
@@ -12,7 +11,7 @@ class UserRepository extends EntityRepository
         $em=$this->getEntityManager();
 
         
-        $query=$em->createQuery("SELECT d FROM AppBundle:User d WHERE :activiteitid MEMBER OF d.activiteiten");
+        $query=$em->createQuery("SELECT d FROM App:User d WHERE :activiteitid MEMBER OF d.activiteiten");
 
         $query->setParameter('activiteitid',$activiteitid);
 

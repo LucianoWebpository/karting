@@ -1,7 +1,6 @@
 <?php
-// src/AppBundle/Form/ActiviteitType
-namespace AppBundle\Form;
-use AppBundle\Entity\Activiteit;
+namespace App\Form;
+use App\Entity\Activiteit;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 
@@ -24,7 +23,7 @@ class ActiviteitType extends AbstractType
             ->add('tijd', TimeType::class, ['attr' => ['class' => 'js-timepicker', 'placeholder'=>'hh:mm'],
                 'widget'=>'single_text','html5' => false,])
             ->add('soort', EntityType::class,
-                array('class' => 'AppBundle:Soortactiviteit',
+                array('class' => 'App:Soortactiviteit',
                     'choice_label' => 'naam',));
     }
     public function configureOptions(OptionsResolver $resolver)

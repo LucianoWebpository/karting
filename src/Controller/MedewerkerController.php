@@ -4,7 +4,7 @@ namespace App\Controller;
 
 
 use App\Entity\Activiteit;
-use AppBundle\Form\ActiviteitType;
+use App\Form\ActiviteitType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Form\Extension\Core\Type\ResetType;
@@ -20,7 +20,7 @@ class MedewerkerController extends Controller
     {
 
         $activiteiten=$this->getDoctrine()
-            ->getRepository('AppBundle:Activiteit')
+            ->getRepository('App:Activiteit')
             ->findAll();
 
         return $this->render('medewerker/activiteiten.html.twig', [
@@ -34,14 +34,14 @@ class MedewerkerController extends Controller
     public function detailsAction($id)
     {
         $activiteiten=$this->getDoctrine()
-            ->getRepository('AppBundle:Activiteit')
+            ->getRepository('App:Activiteit')
             ->findAll();
         $activiteit=$this->getDoctrine()
-            ->getRepository('AppBundle:Activiteit')
+            ->getRepository('App:Activiteit')
             ->find($id);
 
         $deelnemers=$this->getDoctrine()
-            ->getRepository('AppBundle:User')
+            ->getRepository('App:User')
             ->getDeelnemers($id);
 
 
@@ -58,7 +58,7 @@ class MedewerkerController extends Controller
     public function beheerAction()
     {
         $activiteiten=$this->getDoctrine()
-            ->getRepository('AppBundle:Activiteit')
+            ->getRepository('App:Activiteit')
             ->findAll();
 
         return $this->render('medewerker/beheer.html.twig', [
@@ -93,7 +93,7 @@ class MedewerkerController extends Controller
             return $this->redirectToRoute('beheer');
         }
         $activiteiten=$this->getDoctrine()
-            ->getRepository('AppBundle:Activiteit')
+            ->getRepository('App:Activiteit')
             ->findAll();
         return $this->render('medewerker/add.html.twig',array('form'=>$form->createView(),'naam'=>'toevoegen','aantal'=>count($activiteiten)
             ));
@@ -105,7 +105,7 @@ class MedewerkerController extends Controller
     public function updateAction($id,Request $request)
     {
         $a=$this->getDoctrine()
-            ->getRepository('AppBundle:Activiteit')
+            ->getRepository('App:Activiteit')
             ->find($id);
 
         $form = $this->createForm(ActiviteitType::class, $a);
@@ -130,7 +130,7 @@ class MedewerkerController extends Controller
         }
 
         $activiteiten=$this->getDoctrine()
-            ->getRepository('AppBundle:Activiteit')
+            ->getRepository('App:Activiteit')
             ->findAll();
 
         return $this->render('medewerker/add.html.twig',array('form'=>$form->createView(),'naam'=>'aanpassen','aantal'=>count($activiteiten)));
@@ -143,7 +143,7 @@ class MedewerkerController extends Controller
     {
         $em=$this->getDoctrine()->getManager();
         $a= $this->getDoctrine()
-            ->getRepository('AppBundle:Activiteit')->find($id);
+            ->getRepository('App:Activiteit')->find($id);
         $em->remove($a);
         $em->flush();
 
