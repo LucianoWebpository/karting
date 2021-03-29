@@ -18,6 +18,8 @@
             <td>tijd</td>
             <td>soort activiteit</td>
             <td>prijs</td>
+            <td>tijdsduur</td>
+            <td>beschrijving</td>
             <td>schrijf in</td>
         </tr>
         </thead>
@@ -33,9 +35,20 @@
 
             <td>
                 {{ activiteit.soort.naam}}
+{#                {{ activiteit.soort.beschrijving}}#}
+{#                {{ activiteit.soort.tijdsduur}}#}
+{#                {{ activiteit.soort.prijs}}#}
+
+
             </td>
             <td>
                 &euro;{{ activiteit.soort.prijs|number_format(2,',','.')}}
+            </td>
+            <td>
+                {{activiteit.soort.tijdsduur}} min
+            </td>
+            <td>
+                {{activiteit.soort.beschrijving}}
             </td>
             <td title="schrijf in voor activiteit">
 
@@ -59,7 +72,11 @@
             <td>tijd</td>
             <td>soort activiteit</td>
             <td>prijs</td>
+            <td>tijdsduur</td>
+            <td>beschrijving</td>
             <td>schrijf uit</td>
+
+
         </tr>
         </thead>
         <tbody>
@@ -77,6 +94,12 @@
                 </td>
                 <td>
                     &euro;{{ activiteit.soort.prijs|number_format(2,',','.')}}
+                </td>
+                <td>
+                    {{activiteit.soort.tijdsduur}} min
+                </td>
+                <td>
+                    {{activiteit.soort.beschrijving}}
                 </td>
                 <td title="schrijf in voor activiteit">
                     <a href="{{ path('uitschrijven', {'id':activiteit.id}) }}" >
