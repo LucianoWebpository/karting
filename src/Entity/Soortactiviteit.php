@@ -61,6 +61,11 @@ class Soortactiviteit
      */
     private $beschrijving;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $aantal_deelnemers;
+
     public function __construct()
     {
         $this->activiteiten=new ArrayCollection();
@@ -192,6 +197,18 @@ class Soortactiviteit
     public function setBeschrijving(?string $beschrijving): self
     {
         $this->beschrijving = $beschrijving;
+
+        return $this;
+    }
+
+    public function getAantalDeelnemers(): ?int
+    {
+        return $this->aantal_deelnemers;
+    }
+
+    public function setAantalDeelnemers(?int $aantal_deelnemers): self
+    {
+        $this->aantal_deelnemers = $aantal_deelnemers;
 
         return $this;
     }

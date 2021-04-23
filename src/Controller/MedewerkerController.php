@@ -4,12 +4,15 @@ namespace App\Controller;
 
 
 use App\Entity\Activiteit;
+use App\Entity\User;
 use App\Form\ActiviteitType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Form\Extension\Core\Type\ResetType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class MedewerkerController extends Controller
 {
@@ -153,5 +156,46 @@ class MedewerkerController extends Controller
         );
         return $this->redirectToRoute('beheer');
 
+    }
+    /**
+     * @Route("/admin/deelnemers", name="deelnemeroverzicht")
+     */
+    public function showDeelnemers()
+    {
+        $activiteiten=$this->getDoctrine()
+            ->getRepository('App:Activiteit')
+            ->findAll();
+        $deelnemers = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->findAll();
+
+        if (!$deelnemers) {
+            throw $this->createNotFoundException(
+                'No deelnemers found'
+            );
+        }
+         return $this->render('medewerker/deelnemers.html.twig', ['deelnemers' => $deelnemers, 'activiteiten'=>$activiteiten]);
+    }
+    /**
+     * @Route("/admin/deelnemers/reset/{id}", name="resetPassword")
+     */
+    public function resetPassword($id, UserPasswordEncoderInterface $encoder)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $deelnemer = $entityManager->getRepository(User::class)->find($id);
+
+        if (!$deelnemer) {
+            throw $this->createNotFoundException(
+                'No user found for id '.$id
+            );
+        }
+        $plainPassword = 'qwerty';
+        $encoded = $encoder->encodePassword($deelnemer, $plainPassword);
+        $deelnemer->setPassword($encoded);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('deelnemeroverzicht', [
+            'id' => $deelnemer->getId()
+        ]);
     }
 }

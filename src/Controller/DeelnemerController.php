@@ -3,8 +3,12 @@
 namespace App\Controller;
 
 
+use App\Entity\User;
+use App\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 class DeelnemerController extends AbstractController
 {
@@ -34,6 +38,37 @@ class DeelnemerController extends AbstractController
                 'totaal'=>$totaal,
         ]);
     }
+    /**
+     * @Route("/user/account", name="account")
+     */
+    public function accountShow()
+    {
+        $user = $this->getUser();
+
+         return $this->render('deelnemer/account.html.twig', ['user' => $user]);
+    }
+    /**
+     * @Route("/user/account/update", name="accountupdate")
+     */
+    public function accountUpdate(Request $request)
+    {
+        $user = $this->getUser();
+        $form = $this->createForm(UserType::class, $user);
+        $form->add('save', SubmitType::class, array('label'=>"aanpassen"));
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            $user = $form->getData();
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($user);
+            $entityManager->flush();
+            return $this->redirectToRoute('account');
+
+        }
+
+        return $this->render('deelnemer/passwordEdit.html.twig' , [
+            'form' => $form->createView()]);
+    }
+
 
     /**
      * @Route("/user/inschrijven/{id}", name="inschrijven")

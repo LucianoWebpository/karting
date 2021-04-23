@@ -1,7 +1,7 @@
 {% extends 'deelnemer.html.twig' %}
 {% block menu %}
     <li><a href="{{ path('activiteiten') }}">home</a></li>
-
+    <li><a href="{{ path('account') }}">account</a></li>
 
 {% endblock %}
 
@@ -20,42 +20,79 @@
             <td>prijs</td>
             <td>tijdsduur</td>
             <td>beschrijving</td>
+            <td>aantal deelnemers</td>
             <td>schrijf in</td>
         </tr>
         </thead>
         <tbody>
         {% for activiteit in beschikbare_activiteiten %}
+            {% if (activiteit.users|length == activiteit.maxdeelnemers)  or   (date(activiteit.datum) < date()) %}
         <tr>
-            <td>
+            <td style="color: red">
                 {{ activiteit.datum|date("d-m-Y")}}
             </td>
-            <td>
+            <td style="color: red">
                 {{ activiteit.tijd|date("H:i")}}
             </td>
 
-            <td>
+            <td style="color: red">
                 {{ activiteit.soort.naam}}
-{#                {{ activiteit.soort.beschrijving}}#}
-{#                {{ activiteit.soort.tijdsduur}}#}
-{#                {{ activiteit.soort.prijs}}#}
+{#              {{ activiteit.soort.beschrijving}}#}
+{#              {{ activiteit.soort.tijdsduur}}#}
+{#              {{ activiteit.soort.prijs}}#}
 
 
             </td>
-            <td>
+            <td style="color: red">
                 &euro;{{ activiteit.soort.prijs|number_format(2,',','.')}}
             </td>
-            <td>
+            <td style="color: red">
                 {{activiteit.soort.tijdsduur}} min
             </td>
-            <td>
+            <td style="color: red">
                 {{activiteit.soort.beschrijving}}
             </td>
+            <td style="color: red">
+                {{activiteit.soort.aantaldeelnemers}}
+            </td>
             <td title="schrijf in voor activiteit">
+{#                <a href="{{ path('inschrijven', {'id':activiteit.id}) }}" >#}
+{#                    <span class="glyphicon glyphicon-plus" style="color:red"></span>#}
+{#                </a>#}
+            {% else %}
+                <tr>
+                <td>
+                    {{ activiteit.datum|date("d-m-Y")}}
+                </td>
+                <td>
+                    {{ activiteit.tijd|date("H:i")}}
+                </td>
+
+                <td>
+                    {{ activiteit.soort.naam}}
+                    {#                {{ activiteit.soort.beschrijving}}#}
+                    {#                {{ activiteit.soort.tijdsduur}}#}
+                    {#                {{ activiteit.soort.prijs}}#}
 
 
-                <a href="{{ path('inschrijven', {'id':activiteit.id}) }}" >
-                    <span class="glyphicon glyphicon-plus" style="color:red"></span>
-                </a>
+                </td>
+                <td>
+                    &euro;{{ activiteit.soort.prijs|number_format(2,',','.')}}
+                </td>
+                <td>
+                    {{activiteit.soort.tijdsduur}} min
+                </td>
+                <td>
+                    {{activiteit.soort.beschrijving}}
+                </td>
+                <td>
+                    {{activiteit.soort.aantaldeelnemers}}
+                </td>
+                <td title="schrijf in voor activiteit">
+                                <a href="{{ path('inschrijven', {'id':activiteit.id}) }}" >
+                                    <span class="glyphicon glyphicon-plus" style="color:red"></span>
+                                </a>
+                    {% endif %}
             </td>
         </tr>
         {% endfor %}
@@ -74,6 +111,7 @@
             <td>prijs</td>
             <td>tijdsduur</td>
             <td>beschrijving</td>
+            <td>aantal deelnemers</td>
             <td>schrijf uit</td>
 
 
@@ -100,6 +138,9 @@
                 </td>
                 <td>
                     {{activiteit.soort.beschrijving}}
+                </td>
+                <td>
+                    {{activiteit.soort.aantaldeelnemers + 1}}
                 </td>
                 <td title="schrijf in voor activiteit">
                     <a href="{{ path('uitschrijven', {'id':activiteit.id}) }}" >

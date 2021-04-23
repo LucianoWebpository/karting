@@ -42,6 +42,17 @@ class ActiviteitRepository extends \Doctrine\ORM\EntityRepository
         return $totaal;
 
     }
+    public function getTotaalDeelnemers($activiteiten)
+    {
+
+        $totaalDeelnemers=0;
+        foreach($activiteiten as $a)
+        {
+            $totaalDeelnemers+=$a->getSoort()->getDeelnemers();
+        }
+        return $totaalDeelnemers;
+
+    }
     public function findAll()
     {
         return $this->findBy(array(),array('datum'=>'ASC'));
